@@ -1,16 +1,25 @@
 <Solution>
   <Configurations>
-    <Platform Name="Any CPU" />
     <Platform Name="ARM64" />
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Project Path="ClaudeLauncher\ClaudeLauncher.csproj">
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+    <Platform Solution="*|ARM64" Project="ARM64" />
+  </Project>
+  <Project Path="GeneratePackageIcons/GeneratePackageIcons.csproj">
+    <Platform Solution="Debug|x64" Project="x64" />
+    <Platform Solution="Debug|x86" Project="x86" />
+  </Project>
+  <Properties>
+    <Property Name="StartupProject" Value="ClaudeLauncher\ClaudeLauncher.csproj" />
+  </Properties>
   <Folder Name="/Solution Items/">
     <File Path=".gitattributes" />
     <File Path=".gitignore" />
     <File Path="LICENSE.txt" />
     <File Path="README.md" />
   </Folder>
-  <Project Path="ClaudeLauncher\ClaudeLauncher.csproj" />
-  <Project Path="GeneratePackageIcons/GeneratePackageIcons.csproj" />
 </Solution>
