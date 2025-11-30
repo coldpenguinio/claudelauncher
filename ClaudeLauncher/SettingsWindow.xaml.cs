@@ -1,8 +1,8 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
-using Microsoft.Win32;
+using System.Windows.Input;
 using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
-using DialogResult = System.Windows.Forms.DialogResult;
 
 namespace ClaudeLauncher;
 
@@ -18,10 +18,16 @@ public partial class SettingsWindow : Window
 
         var settings = UserSettings.Instance;
 
-        // Terminal
-        TerminalWT.IsChecked = settings.Terminal == TerminalType.WindowsTerminal;
-        TerminalPS.IsChecked = settings.Terminal == TerminalType.PowerShell;
-        TerminalCmd.IsChecked = settings.Terminal == TerminalType.Cmd;
+        // Terminal - check availability
+        var hasWT = TerminalDetector.HasWindowsTerminal;
+        TerminalWT.IsEnabled = hasWT;
+        TerminalWTNotFound.Visibility = hasWT ? Visibility.Collapsed : Visibility.Visible;
+
+        // Select the appropriate terminal
+        var effectiveTerminal = TerminalDetector.GetBestAvailable(settings.Terminal);
+        TerminalWT.IsChecked = effectiveTerminal == TerminalType.WindowsTerminal;
+        TerminalPS.IsChecked = effectiveTerminal == TerminalType.PowerShell;
+        TerminalCmd.IsChecked = effectiveTerminal == TerminalType.Cmd;
         DefaultArgsBox.Text = settings.ClaudeArguments;
 
         // Hotkey
@@ -79,6 +85,35 @@ public partial class SettingsWindow : Window
             if (folder != null)
             {
                 _customFolders.Remove(folder);
+            }
+        }
+    }
+
+    private void TerminalWTInstallLink_Click(object sender, MouseButtonEventArgs e)
+    {
+        try
+        {
+            // Open Microsoft Store page for Windows Terminal
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "ms-windows-store://pdp/?productid=9N0DX20HK701",
+                UseShellExecute = true
+            });
+        }
+        catch
+        {
+            // Fallback to web URL if Store link doesn't work
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "https://aka.ms/terminal",
+                    UseShellExecute = true
+                });
+            }
+            catch
+            {
+                // Ignore if we can't open the link
             }
         }
     }

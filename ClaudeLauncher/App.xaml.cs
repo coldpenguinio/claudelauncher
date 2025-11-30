@@ -249,7 +249,10 @@ public partial class App : Application
                 ? ""
                 : $" {settings.ClaudeArguments}";
 
-            ProcessStartInfo startInfo = settings.Terminal switch
+            // Use the best available terminal (fallback if preferred isn't installed)
+            var terminal = TerminalDetector.GetBestAvailable(settings.Terminal);
+
+            ProcessStartInfo startInfo = terminal switch
             {
                 TerminalType.WindowsTerminal => new ProcessStartInfo
                 {

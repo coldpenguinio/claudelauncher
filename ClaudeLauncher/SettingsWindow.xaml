@@ -36,6 +36,24 @@
                                      Content="Windows Terminal"
                                      Foreground="#E0E0E0"
                                      Margin="0,4"/>
+                        <StackPanel x:Name="TerminalWTNotFound"
+                                    Orientation="Horizontal"
+                                    Margin="20,0,0,4"
+                                    Visibility="Collapsed">
+                            <TextBlock Text="(not installed - "
+                                       Foreground="#F44336"
+                                       FontSize="11"/>
+                            <TextBlock x:Name="TerminalWTInstallLink"
+                                       Text="install from Microsoft Store"
+                                       Foreground="#4FC3F7"
+                                       FontSize="11"
+                                       TextDecorations="Underline"
+                                       Cursor="Hand"
+                                       MouseLeftButtonUp="TerminalWTInstallLink_Click"/>
+                            <TextBlock Text=")"
+                                       Foreground="#F44336"
+                                       FontSize="11"/>
+                        </StackPanel>
                         <RadioButton x:Name="TerminalPS"
                                      Content="PowerShell"
                                      Foreground="#E0E0E0"
