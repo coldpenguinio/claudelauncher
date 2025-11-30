@@ -1,0 +1,12 @@
+<Application x:Class="ClaudeLauncher.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ClaudeLauncher"
+             ShutdownMode="OnExplicitShutdown">
+    <Application.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+        <local:BoolToVisibilityInvertedConverter x:Key="BoolToVisibilityInverted"/>
+        <local:NullToCollapsedConverter x:Key="NullToCollapsed"/>
+        <local:BoolToFontWeightConverter x:Key="BoolToFontWeight"/>
+    </Application.Resources>
+</Application>

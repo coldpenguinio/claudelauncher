@@ -1,0 +1,264 @@
+<Window x:Class="ClaudeLauncher.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Claude Launcher Settings"
+        Width="500"
+        Height="600"
+        WindowStartupLocation="CenterScreen"
+        Background="#1E1E1E"
+        ResizeMode="NoResize">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Terminal Settings -->
+                <TextBlock Text="Terminal"
+                           Foreground="#E0E0E0"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8"/>
+
+                <Border Background="#2D2D2D"
+                        CornerRadius="4"
+                        Padding="12"
+                        Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="Launch Claude in:"
+                                   Foreground="#A0A0A0"
+                                   FontSize="12"
+                                   Margin="0,0,0,8"/>
+                        <RadioButton x:Name="TerminalWT"
+                                     Content="Windows Terminal"
+                                     Foreground="#E0E0E0"
+                                     Margin="0,4"/>
+                        <RadioButton x:Name="TerminalPS"
+                                     Content="PowerShell"
+                                     Foreground="#E0E0E0"
+                                     Margin="0,4"/>
+                        <RadioButton x:Name="TerminalCmd"
+                                     Content="Command Prompt"
+                                     Foreground="#E0E0E0"
+                                     Margin="0,4"/>
+
+                        <TextBlock Text="Default Arguments:"
+                                   Foreground="#A0A0A0"
+                                   FontSize="12"
+                                   Margin="0,16,0,8"/>
+                        <TextBox x:Name="DefaultArgsBox"
+                                 Background="#3D3D3D"
+                                 Foreground="#E0E0E0"
+                                 BorderBrush="#4D4D4D"
+                                 CaretBrush="#E0E0E0"
+                                 Padding="8,6"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Hotkey Settings -->
+                <TextBlock Text="Hotkey"
+                           Foreground="#E0E0E0"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8"/>
+
+                <Border Background="#2D2D2D"
+                        CornerRadius="4"
+                        Padding="12"
+                        Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="Global shortcut to open launcher:"
+                                   Foreground="#A0A0A0"
+                                   FontSize="12"
+                                   Margin="0,0,0,8"/>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox x:Name="HotkeyCtrl"
+                                      Content="Ctrl"
+                                      Foreground="#E0E0E0"
+                                      Margin="0,0,12,0"/>
+                            <CheckBox x:Name="HotkeyShift"
+                                      Content="Shift"
+                                      Foreground="#E0E0E0"
+                                      Margin="0,0,12,0"/>
+                            <CheckBox x:Name="HotkeyAlt"
+                                      Content="Alt"
+                                      Foreground="#E0E0E0"
+                                      Margin="0,0,12,0"/>
+                            <CheckBox x:Name="HotkeyWin"
+                                      Content="Win"
+                                      Foreground="#E0E0E0"
+                                      Margin="0,0,12,0"/>
+                            <TextBlock Text="+"
+                                       Foreground="#808080"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,8,0"/>
+                            <TextBox x:Name="HotkeyKeyBox"
+                                     Width="40"
+                                     Background="#3D3D3D"
+                                     Foreground="#E0E0E0"
+                                     BorderBrush="#4D4D4D"
+                                     CaretBrush="#E0E0E0"
+                                     TextAlignment="Center"
+                                     MaxLength="1"
+                                     CharacterCasing="Upper"
+                                     Padding="4"/>
+                        </StackPanel>
+                        <TextBlock Text="Restart app for hotkey changes to take effect"
+                                   Foreground="#808080"
+                                   FontSize="11"
+                                   Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Theme Settings -->
+                <TextBlock Text="Appearance"
+                           Foreground="#E0E0E0"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8"/>
+
+                <Border Background="#2D2D2D"
+                        CornerRadius="4"
+                        Padding="12"
+                        Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="Theme:"
+                                   Foreground="#A0A0A0"
+                                   FontSize="12"
+                                   Margin="0,0,0,8"/>
+                        <RadioButton x:Name="ThemeDark"
+                                     Content="Dark"
+                                     Foreground="#E0E0E0"
+                                     Margin="0,4"/>
+                        <RadioButton x:Name="ThemeLight"
+                                     Content="Light"
+                                     Foreground="#E0E0E0"
+                                     Margin="0,4"/>
+                        <RadioButton x:Name="ThemeSystem"
+                                     Content="Follow System"
+                                     Foreground="#E0E0E0"
+                                     Margin="0,4"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- IDE Sources -->
+                <TextBlock Text="Project Sources"
+                           Foreground="#E0E0E0"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8"/>
+
+                <Border Background="#2D2D2D"
+                        CornerRadius="4"
+                        Padding="12"
+                        Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="Show recent projects from:"
+                                   Foreground="#A0A0A0"
+                                   FontSize="12"
+                                   Margin="0,0,0,8"/>
+                        <CheckBox x:Name="IncludeVS"
+                                  Content="Visual Studio"
+                                  Foreground="#E0E0E0"
+                                  Margin="0,4"/>
+                        <CheckBox x:Name="IncludeVSCode"
+                                  Content="VS Code"
+                                  Foreground="#E0E0E0"
+                                  Margin="0,4"/>
+                        <CheckBox x:Name="IncludeRider"
+                                  Content="JetBrains Rider"
+                                  Foreground="#E0E0E0"
+                                  Margin="0,4"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Custom Folders -->
+                <TextBlock Text="Custom Folders"
+                           Foreground="#E0E0E0"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8"/>
+
+                <Border Background="#2D2D2D"
+                        CornerRadius="4"
+                        Padding="12"
+                        Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="Add folders to always show in the list:"
+                                   Foreground="#A0A0A0"
+                                   FontSize="12"
+                                   Margin="0,0,0,8"/>
+                        <ListBox x:Name="CustomFoldersList"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 MaxHeight="120">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{Binding Path}"
+                                                   Foreground="#E0E0E0"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                        <Button Grid.Column="1"
+                                                Content="X"
+                                                Background="Transparent"
+                                                Foreground="#F44336"
+                                                BorderThickness="0"
+                                                Cursor="Hand"
+                                                Click="RemoveFolder_Click"
+                                                Tag="{Binding Path}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <Button Content="Add Folder..."
+                                Margin="0,8,0,0"
+                                Padding="8,6"
+                                HorizontalAlignment="Left"
+                                Click="AddFolder_Click"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Startup -->
+                <TextBlock Text="Startup"
+                           Foreground="#E0E0E0"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8"/>
+
+                <Border Background="#2D2D2D"
+                        CornerRadius="4"
+                        Padding="12"
+                        Margin="0,0,0,16">
+                    <CheckBox x:Name="AutoStartCheckBox"
+                              Content="Start with Windows"
+                              Foreground="#E0E0E0"/>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,16,0,0">
+            <Button Content="Cancel"
+                    Width="80"
+                    Padding="8,6"
+                    Margin="0,0,8,0"
+                    Click="Cancel_Click"/>
+            <Button Content="Save"
+                    Width="80"
+                    Padding="8,6"
+                    IsDefault="True"
+                    Click="Save_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

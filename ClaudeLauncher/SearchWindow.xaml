@@ -1,0 +1,218 @@
+<Window x:Class="ClaudeLauncher.SearchWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ClaudeLauncher"
+        Title="Claude Launcher"
+        Width="600"
+        Height="500"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        Deactivated="Window_Deactivated"
+        PreviewKeyDown="Window_PreviewKeyDown">
+
+    <Window.Resources>
+        <local:ThemeManager x:Key="ThemeManager"/>
+    </Window.Resources>
+
+    <Border x:Name="MainBorder"
+            Background="{Binding BackgroundColor, Source={StaticResource ThemeManager}}"
+            BorderBrush="{Binding BorderColor, Source={StaticResource ThemeManager}}"
+            BorderThickness="1"
+            CornerRadius="8">
+        <Grid Margin="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Search Box -->
+            <Border Grid.Row="0"
+                    Background="{Binding SearchBoxColor, Source={StaticResource ThemeManager}}"
+                    BorderBrush="{Binding BorderColor, Source={StaticResource ThemeManager}}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Padding="8,6">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Text="Search:"
+                               FontSize="14"
+                               Foreground="{Binding SecondaryTextColor, Source={StaticResource ThemeManager}}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,8,0"/>
+
+                    <TextBox x:Name="SearchBox"
+                             Grid.Column="1"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             Foreground="{Binding PrimaryTextColor, Source={StaticResource ThemeManager}}"
+                             CaretBrush="{Binding PrimaryTextColor, Source={StaticResource ThemeManager}}"
+                             FontSize="14"
+                             VerticalAlignment="Center"
+                             TextChanged="SearchBox_TextChanged"/>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <CheckBox x:Name="MultiSelectCheckBox"
+                                  Content="Multi"
+                                  Foreground="{Binding SecondaryTextColor, Source={StaticResource ThemeManager}}"
+                                  VerticalAlignment="Center"
+                                  Margin="8,0,0,0"
+                                  Checked="MultiSelectCheckBox_Changed"
+                                  Unchecked="MultiSelectCheckBox_Changed"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Results List -->
+            <ListBox x:Name="ResultsList"
+                     Grid.Row="1"
+                     Margin="0,8,0,0"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     SelectionMode="Extended"
+                     SelectionChanged="ResultsList_SelectionChanged"
+                     MouseDoubleClick="ResultsList_MouseDoubleClick"
+                     MouseRightButtonUp="ResultsList_MouseRightButtonUp">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border x:Name="Border"
+                                            Background="Transparent"
+                                            CornerRadius="4"
+                                            Padding="8,6"
+                                            Margin="0,2">
+                                        <ContentPresenter/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Border" Property="Background" Value="#0E639C"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Border" Property="Background" Value="#2A2D2E"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Pin and Source indicators -->
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,8,0" VerticalAlignment="Center">
+                                <TextBlock Text="*"
+                                           Foreground="#FFD700"
+                                           FontWeight="Bold"
+                                           FontSize="14"
+                                           Visibility="{Binding IsPinned, Converter={StaticResource BoolToVisibility}}"
+                                           ToolTip="Pinned"
+                                           Margin="0,0,4,0"/>
+                                <Border Background="#404040"
+                                        CornerRadius="2"
+                                        Padding="4,1">
+                                    <TextBlock Text="{Binding SourceIcon}"
+                                               Foreground="#A0A0A0"
+                                               FontSize="10"/>
+                                </Border>
+                            </StackPanel>
+
+                            <!-- Main content -->
+                            <StackPanel Grid.Column="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding DisplayName}"
+                                               Foreground="#E0E0E0"
+                                               FontSize="13"
+                                               FontWeight="{Binding IsPinned, Converter={StaticResource BoolToFontWeight}}"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text=" - "
+                                               Foreground="#606060"
+                                               FontSize="13"
+                                               Visibility="{Binding GitBranch, Converter={StaticResource NullToCollapsed}}"/>
+                                    <TextBlock Text="{Binding GitBranch}"
+                                               Foreground="#4EC9B0"
+                                               FontSize="12"
+                                               FontStyle="Italic"
+                                               Visibility="{Binding GitBranch, Converter={StaticResource NullToCollapsed}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding FullPath}"
+                                           Foreground="#808080"
+                                           FontSize="11"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+
+                            <!-- Status indicators -->
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="!"
+                                           Foreground="#F44336"
+                                           FontWeight="Bold"
+                                           FontSize="12"
+                                           Visibility="{Binding Exists, Converter={StaticResource BoolToVisibilityInverted}}"
+                                           ToolTip="File not found"
+                                           Margin="0,0,4,0"/>
+                                <TextBlock Text="{Binding LastModifiedText}"
+                                           Foreground="#606060"
+                                           FontSize="11"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!-- Status Bar -->
+            <Border Grid.Row="2"
+                    Margin="0,8,0,0"
+                    Padding="4">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock x:Name="StatusText"
+                               Grid.Column="0"
+                               Foreground="{Binding SecondaryTextColor, Source={StaticResource ThemeManager}}"
+                               FontSize="11">
+                        <Run Text="Enter"/>
+                        <Run Text=": Launch  |  "/>
+                        <Run Text="Shift+Enter"/>
+                        <Run Text=": Open in VS  |  "/>
+                        <Run Text="Right-click"/>
+                        <Run Text=": More options"/>
+                    </TextBlock>
+
+                    <Button x:Name="SettingsButton"
+                            Grid.Column="1"
+                            Content="Settings"
+                            Background="Transparent"
+                            Foreground="{Binding SecondaryTextColor, Source={StaticResource ThemeManager}}"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            Click="SettingsButton_Click"
+                            Padding="8,2"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
