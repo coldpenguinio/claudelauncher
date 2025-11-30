@@ -62,7 +62,8 @@ public class RecentSolutionsService
     private List<SolutionInfo> GetVisualStudioSolutions()
     {
         var solutions = new List<SolutionInfo>();
-        var vsVersions = new[] { "17.0", "16.0", "15.0" };
+        // VS 2026 = 19.0, VS 2024 = 18.0, VS 2022 = 17.0, VS 2019 = 16.0, VS 2017 = 15.0
+        var vsVersions = new[] { "19.0", "18.0", "17.0", "16.0", "15.0" };
 
         foreach (var version in vsVersions)
         {

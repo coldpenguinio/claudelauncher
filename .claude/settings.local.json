@@ -4,7 +4,9 @@
       "Bash(dotnet build:*)",
       "Bash(dotnet run:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(dir \"%LOCALAPPDATA%\\Microsoft\\VisualStudio\")",
+      "Bash(dir \"C:\\Users\\Tim\\AppData\\Local\\Microsoft\\VisualStudio\")"
     ],
     "deny": [],
     "ask": []
