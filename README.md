@@ -18,29 +18,46 @@ A Windows system tray application that shows your recent Visual Studio, VS Code,
 
 ## Installation
 
-### Prerequisites
+### Option 1: MSIX Package (Recommended)
+
+Download the latest `.msix` package from the [Releases](https://github.com/yourusername/ClaudeLauncher/releases) page and double-click to install.
+
+### Option 2: Build from Source
+
+#### Prerequisites
 - .NET 8.0 SDK or later
-- Windows 10/11
+- Windows 10/11 (version 1809 or later)
 - Claude Code CLI installed and in PATH
 
-### Build from Source
+#### Build and Run
 ```bash
 git clone https://github.com/yourusername/ClaudeLauncher.git
 cd ClaudeLauncher
 dotnet build
-```
-
-### Run
-```bash
 dotnet run --project ClaudeLauncher
 ```
 
-### Publish as Single Executable
+#### Publish as Single Executable
 ```bash
 dotnet publish ClaudeLauncher -c Release -r win-x64 --self-contained -p:PublishSingleFile=true
 ```
 
 The executable will be in `ClaudeLauncher/bin/Release/net8.0-windows/win-x64/publish/`
+
+#### Build MSIX Package
+
+To build the MSIX installer package, you need Visual Studio with the Windows Application Packaging Project support:
+
+1. Open `ClaudeLauncher.slnx` in Visual Studio
+2. Right-click on `ClaudeLauncher.Package` project
+3. Select **Publish** > **Create App Packages**
+4. Choose **Sideloading** and follow the wizard
+5. The `.msix` file will be created in `ClaudeLauncher.Package\AppPackages\`
+
+For automated builds:
+```bash
+msbuild ClaudeLauncher.Package\ClaudeLauncher.Package.wapproj /p:Configuration=Release /p:Platform=x64 /p:UapAppxPackageBuildMode=SideloadOnly
+```
 
 ## Usage
 
@@ -103,20 +120,30 @@ Settings are stored in:
 ClaudeLauncher/
 ├── ClaudeLauncher.slnx
 ├── README.md
-└── ClaudeLauncher/
-    ├── ClaudeLauncher.csproj
-    ├── App.xaml / App.xaml.cs          # Main application, tray icon
-    ├── SearchWindow.xaml / .cs          # Main search/launcher window
-    ├── SettingsWindow.xaml / .cs        # Settings dialog
-    ├── ArgumentsDialog.xaml / .cs       # Launch with arguments dialog
-    ├── SolutionInfo.cs                  # Project data model
-    ├── RecentSolutionsService.cs        # Reads recent projects from IDEs
-    ├── UserSettings.cs                  # Persisted settings
-    ├── AutoStartService.cs              # Windows auto-start registry
-    ├── GlobalHotkey.cs                  # System-wide hotkey registration
-    ├── ThemeManager.cs                  # Dark/light theme support
-    ├── IconGenerator.cs                 # Programmatic icon generation
-    └── Converters.cs                    # WPF value converters
+├── LICENSE.txt
+├── ClaudeLauncher/                    # Main WPF application
+│   ├── ClaudeLauncher.csproj
+│   ├── App.xaml / App.xaml.cs         # Main application, tray icon
+│   ├── SearchWindow.xaml / .cs        # Main search/launcher window
+│   ├── SettingsWindow.xaml / .cs      # Settings dialog
+│   ├── ArgumentsDialog.xaml / .cs     # Launch with arguments dialog
+│   ├── SolutionInfo.cs                # Project data model
+│   ├── RecentSolutionsService.cs      # Reads recent projects from IDEs
+│   ├── UserSettings.cs                # Persisted settings
+│   ├── AutoStartService.cs            # Windows auto-start registry
+│   ├── GlobalHotkey.cs                # System-wide hotkey registration
+│   ├── ThemeManager.cs                # Dark/light theme support
+│   ├── TerminalDetector.cs            # Detects available terminals
+│   ├── IconGenerator.cs               # Programmatic icon generation
+│   ├── Converters.cs                  # WPF value converters
+│   └── Resources/
+│       └── app.ico                    # Application icon
+├── ClaudeLauncher.Package/            # MSIX packaging project
+│   ├── ClaudeLauncher.Package.wapproj
+│   ├── Package.appxmanifest
+│   └── Images/                        # Store and tile images
+└── GeneratePackageIcons/              # Utility to generate icons
+    └── Program.cs
 ```
 
 ## License
